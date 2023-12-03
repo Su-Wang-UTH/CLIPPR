@@ -39,14 +39,10 @@ object <- runClassifier(object)
 object <- runMetaModel(object, modelNames = c( "RF.Pred_bulk", "RF.Pred_mesenchymalMarkers",  "RF.Pred_T.cellMarkers"), cnvModelName="RF.Pred_CNV_chrmean", CNV = T)
 ```
   
-In the code above, `CreateCLIPPRObject` creates a CLIPPR object with bulk raw data, bulk count data, scell data and bulk sample phenotypes.
-
-runFeatureSelection is single cell and bulk class specific feature selection
-
-extractCNVSignal calculate mean smoothed CNV signal for each chr using Casper
-
-runCNVClassifier random forest classifier trained on selected chromosomes
-
-runClassifier random forest classifier trained on scell and bulk features
-
-runMetaModel meta model using all classifiers
+The workflow of CLIPPR is intuitive and straightforward as shown in the code above.  
+- `CreateCLIPPRObject` creates a CLIPPR object with bulk raw data, bulk count data, single-cell data, and bulk sample phenotypes.
+- `runFeatureSelection` conducts single-cell and bulk class-specific feature selection.
+- `extractCNVSignal` calculates the mean smoothed CNV signal for each `chr` using Casper.
+- `runCNVClassifier` performs random forest classification with the model trained on selected `chr`.
+- `runClassifier` performs random forest classification with the model trained on single-cell and bulk features.
+- `runMetaModel` runs the integrated meta-model using all the classifiers.

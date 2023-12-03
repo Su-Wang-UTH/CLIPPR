@@ -6,7 +6,7 @@ CLIPPR is a meta-model that predicts the meningioma classes by leveraging single
   
 ![clippr](clippr.png)
   
-In more detail, CLIPPR aims to leverage insights from both bulk transcriptomic and single-cell sequencing to generate high-performing models for the accurate classification of bulk transcriptomic sequencing. To this end, CLIPPR utilizes three distinct sets of features: _**a)**_ Differentially expressed genes (DEGs) specific to each subtype derived from bulk RNA-Seq data. _**b)**_ DEGs that are specific to both cell type and subtype, extracted from single-cell RNA-Seq. _**c)**_ CNV profiles of each subtype inferred from bulk transcriptomics.  
+In more detail, CLIPPR aims to leverage insights from both bulk transcriptomic and single-cell sequencing to generate high-performing models for the accurate classification of bulk transcriptomic sequencing. To this end, CLIPPR utilizes three distinct sets of features: **a)** Differentially expressed genes (DEGs) specific to each subtype derived from bulk RNA-Seq data. **b)** DEGs that are specific to both cell type and subtype, extracted from single-cell RNA-Seq. **c)** CNV profiles of each subtype inferred from bulk transcriptomics.  
   
 - **Bulk RNA-Seq-based model (bulkRF)**  
 We trained a baseline bulk-transcriptomic model using the DEGs specific to each class within the well-characterized bulk RNA-Seq meningioma samples in the training cohort. These DEGs were used to train a Random Forest classifier.

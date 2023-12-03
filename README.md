@@ -40,9 +40,9 @@ object <- runMetaModel(object, modelNames = c( "RF.Pred_bulk", "RF.Pred_mesenchy
 ```
   
 The workflow of CLIPPR is intuitive and straightforward as shown in the code above.  
-- `CreateCLIPPRObject` creates a **CLIPPR object** with **bulk raw data**, **bulk count data**, **single-cell data**, and **bulk sample phenotypes**.
-- `runFeatureSelection` conducts **single-cell** and **bulk class-specific feature selection**.
+- `CreateCLIPPRObject` creates a **CLIPPR object** with bulk raw data, bulk count data, single-cell data, and bulk sample phenotypes.
+- `runFeatureSelection` conducts single-cell and bulk class-specific **feature selection**.
 - `extractCNVSignal` calculates the mean smoothed **CNV signal** for each `chr` using _**CaSpER**_.
 - `runCNVClassifier` performs **random forest classification** with the model trained on selected `chr`.
-- `runClassifier` performs **random forest classification** with the model trained on **single-cell** and **bulk features**.
+- `runClassifier` performs **random forest classification** with the model trained on single-cell and bulk features.
 - `runMetaModel` runs the **integrated meta-model** using all the classifiers.

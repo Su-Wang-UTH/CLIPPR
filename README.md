@@ -6,7 +6,7 @@ CLIPPR is a meta-model that predicts the meningioma classes by leveraging single
   
 ![clippr](clippr.png)
   
-In more detail, the CLIPPR algorithm aims to leverage insights from both bulk transcriptomic and single-cell sequencing to generate high-performing models for the accurate classification of bulk transcriptomic sequencing. To this end, CLIPPR utilizes three distinct sets of features: a) Differentially expressed genes (DEGs) specific to each subtype derived from bulk RNA-Seq data. b) DEGs that are specific to both cell type and subtype, extracted from single-cell RNA-Seq.  c) CNV profiles of each subtype inferred from bulk transcriptomics.  
+In more detail, CLIPPR aims to leverage insights from both bulk transcriptomic and single-cell sequencing to generate high-performing models for the accurate classification of bulk transcriptomic sequencing. To this end, CLIPPR utilizes three distinct sets of features: a) Differentially expressed genes (DEGs) specific to each subtype derived from bulk RNA-Seq data. b) DEGs that are specific to both cell type and subtype, extracted from single-cell RNA-Seq.  c) CNV profiles of each subtype inferred from bulk transcriptomics.  
   
 - **Bulk RNA-Seq-based model (bulkRF)**  
 We trained a baseline bulk-transcriptomic model using the DEGs specific to each class within the well-characterized bulk RNA-Seq meningioma samples in the training cohort. These DEGs were used to train a Random Forest classifier.
@@ -19,7 +19,34 @@ In previous work, we demonstrated how CNV profiles can be inferred from bulk tra
   
 In summary, the input for CLIPPR consists of aligned single-cell and bulk RNA-seq read counts, as well as the bulk RNA-seq training cohort sample names and tumor classes (subtypes). Additionally, the input requires the tumor classes and cell types for each cell within the single-cell data. The outputs of the bulkRF, ctRFs, and cnvRF, which are probabilities that a given sample of each possible class, are used as features in a Random Forest model. Thus, the scRFs, cnvRF, and bulkRF are integrated into a meta-model that is used to assign a sample’s final classification.  
   
-
 ## Application
+CLIPPR is implemented in R. A usage example is provided below.  
+  
+```
+object <- CreateCLIPPRObject(
+    bulkdata = bulk_count_data,
+    bulk_normalized_data = bulk_normalized_data,
+    bulkdata_ss = samples,
+    seurat_obj = seurat_obj
+)
 
+project_id <- "032323_MN"
+object <- runFeatureSelection(object)
+object <- extractCNVSignal(object, project_id)
+object <- runCNVClassifier(object, fts = c("chr1p", "chr14q","chr22q"))
+object <- runClassifier(object)
 
+object <- runMetaModel(object, modelNames = c( "RF.Pred_bulk", "RF.Pred_mesenchymalMarkers",  "RF.Pred_T.cellMarkers"), cnvModelName="RF.Pred_CNV_chrmean", CNV = T)
+```
+  
+In the code above, `CreateCLIPPRObject` creates a CLIPPR object with bulk raw data, bulk count data, scell data and bulk sample phenotypes.
+
+runFeatureSelection is single cell and bulk class specific feature selection
+
+extractCNVSignal calculate mean smoothed CNV signal for each chr using Casper
+
+runCNVClassifier random forest classifier trained on selected chromosomes
+
+runClassifier random forest classifier trained on scell and bulk features
+
+runMetaModel meta model using all classifiers
